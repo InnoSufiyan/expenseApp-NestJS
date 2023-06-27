@@ -19,7 +19,7 @@ export const data: Data = {
             type: ReportType.INCOME,
         },
         {
-            id: "uuid",
+            id: "uuid1",
             source: "Youtube",
             amount: 2200,
             created_at: new Date(),
@@ -27,7 +27,7 @@ export const data: Data = {
             type: ReportType.INCOME,
         },
         {
-            id: "uuid",
+            id: "uuid2",
             source: "Food",
             amount: 500,
             created_at: new Date(),
@@ -51,7 +51,7 @@ interface Data {
 
 
 data.report.push({
-    id: "uuid",
+    id: "uuid3",
     source: "Salary",
     amount: 7500,
     created_at: new Date(),
