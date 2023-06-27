@@ -1,11 +1,16 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Controller, Delete, Get, Post, Put, Param } from '@nestjs/common';
 import { AppService } from './app.service';
+import { ReportType, data } from './data';
 
 @Controller('report/:type')
 export class AppController {
   @Get('')
-  getAllReports() {
-    return [];
+  getAllReports(@Param('type') type: string) {
+    console.log(type, "==>>type")
+    const reportType = type === "income" ? ReportType.INCOME : ReportType.EXPENSE;
+    const filteredData = data.report.filter((report) => report.type === reportType);
+    return filteredData;
   }
   @Get(':id')
   getReportById() {
