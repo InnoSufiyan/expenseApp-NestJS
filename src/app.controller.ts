@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Delete, Get, Post, Put, Param, Body } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, Param, Body, ParseUUIDPipe, ParseEnumPipe } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ReportType, data } from './data';
-import { v4 as uuid } from 'uuid';
+import {CreateReportDto} from './dto/report.dto'
+
 
 @Controller('report/:type')
 export class AppController {
@@ -12,7 +13,7 @@ export class AppController {
   }
 
   @Get('')
-  getAllReports(@Param('type') type: string) {
+  getAllReports(@Param('type', new ParseEnumPipe(ReportType)) type: string) {
     console.log(type, "==>>type")
     const reportType = type === "income" ? ReportType.INCOME : ReportType.EXPENSE;
     return this.appService.getAllReports(reportType);
@@ -20,14 +21,14 @@ export class AppController {
   @Get(':id')
   getReportById(
     @Param('type') type: string,
-    @Param('id') id: string
+    @Param('id', ParseUUIDPipe) id: string
   ) {
     return this.appService.getReportById(type, id);
   }
   @Post('')
   createReport(
     @Param('type') type: string,
-    @Body() { source, amount }: { source: string, amount: number }
+    @Body() { source, amount }: CreateReportDto
   ) {
     return this.appService.createReport(source,
       amount, type);
