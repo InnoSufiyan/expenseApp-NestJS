@@ -6,36 +6,31 @@ import { v4 as uuid } from 'uuid';
 
 @Controller('report/:type')
 export class AppController {
+
+  constructor(private readonly appService: AppService) {
+
+  }
+
   @Get('')
   getAllReports(@Param('type') type: string) {
     console.log(type, "==>>type")
     const reportType = type === "income" ? ReportType.INCOME : ReportType.EXPENSE;
-    const filteredData = data.report.filter((report) => report.type === reportType);
-    return filteredData;
+    return this.appService.getAllReports(reportType);
   }
   @Get(':id')
   getReportById(
     @Param('type') type: string,
     @Param('id') id: string
   ) {
-    return data.report.filter((report) => report.type === type && report.id === id)[0]
+    return this.appService.getReportById(type, id);
   }
   @Post('')
   createReport(
     @Param('type') type: string,
     @Body() { source, amount }: { source: string, amount: number }
   ) {
-    const newReport = {
-      id: uuid(),
-      source,
-      amount,
-      created_at: new Date(),
-      updated_at: new Date(),
-      type: type === "income" ? ReportType.INCOME : ReportType.EXPENSE,
-    }
-    console.log(newReport, "==>>newReport")
-    data.report.push(newReport);
-    return newReport;
+    return this.appService.createReport(source,
+      amount, type);
   }
   @Put(':id')
   updateReport(
